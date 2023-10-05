@@ -18,13 +18,6 @@ with DAG(
             task_id = "get_data_from_API",
             bash_command = f'python3 {path}/data_extraction.py')
 
-        mysql_query = """
-                CREATE TABLE IF NOT EXISTS status_class(
-                        case_id INT,
-                        status_name varchar(50), 
-                        status_detail varchar(50), 
-                        status varchar(50));
-
         postgres_query = """
                 CREATE TABLE IF NOT EXISTS dwh.public.dim_status_table(
                         case_id INT,
@@ -44,7 +37,7 @@ with DAG(
                 (8,'probable', 'discarded', 'probable_discarded'),
                 (9,'suspect', 'diisolasi', 'suspect_diisolasi'),
                 (10,'suspect', 'diisolasi', 'suspect_diisolasi'),
-                (11,'suspect', 'diisolasi', 'suspect_diisolasi');;"""
+                (11,'suspect', 'diisolasi', 'suspect_diisolasi');"""
 
 
         postgres_task = PostgresOperator(
