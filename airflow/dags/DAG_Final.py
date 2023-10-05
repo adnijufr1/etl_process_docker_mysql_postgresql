@@ -1,6 +1,5 @@
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
-from airflow.providers.mysql.operators.mysql import MySqlOperator
 from airflow.operators.python import PythonOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from datetime import datetime
@@ -26,7 +25,14 @@ with DAG(
                         status_detail varchar(50), 
                         status varchar(50));
 
-                INSERT INTO status_class (case_id,status_name, status_detail, status)
+        postgres_query = """
+                CREATE TABLE IF NOT EXISTS dwh.public.dim_status_table(
+                        case_id INT,
+                        status_name varchar(50), 
+                        status_detail varchar(50), 
+                        status varchar(50));
+
+                INSERT INTO dwh.public.dim_status_table (case_id,status_name, status_detail, status)
                 VALUES
                 (1,'closecontact', 'dikarantina', 'closecontact_dikarantina'),
                 (2,'closecontact', 'discarded', 'closecontact_discarded'),
@@ -41,10 +47,10 @@ with DAG(
                 (11,'suspect', 'diisolasi', 'suspect_diisolasi');;"""
 
 
-        mysql_task = MySqlOperator(
+        postgres_task = PostgresOperator(
                 task_id = "Creating_NewColumns_and_Inserting_Values_for_dim_status_table_only",
-                mysql_conn_id = 'Mysql',
-                sql=mysql_query,
+                postgres_conn_id = 'Postgres',
+                sql=postgres_query,
                 autocommit=True,
                 dag=dag)
 
@@ -62,5 +68,5 @@ with DAG(
             bash_command =  f'python3 {path}/fact_table_province_postgres.py') 
         
 
-        task1 >> mysql_task >> task2 >> [task3, task4]  
+        task1 >> postgres_task >> task2 >> [task3, task4]  
 
