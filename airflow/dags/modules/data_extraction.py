@@ -13,7 +13,14 @@ df = pd.DataFrame(data)
 # Dataframe information
 print(df.info())
 
-engine_mysql = create_engine('mysql+mysqlconnector://root:mysql@192.168.100.16:3307/raw_data')
+mysql_username = 
+mysql_password = 
+mysql_host = 
+mysql_port = 
+mysql_database = 
+
+mysql_conn_string = f"mysql+mysqlconnector://{mysql_username}:{mysql_password}@{mysql_host}:{mysql_port}/{mysql_database}"
+engine_mysql = create_engine(mysql_conn_string)
 
 df.to_sql(name='covid_jabar', con=engine_mysql,index=False,if_exists='replace')
 print('DATA INSERTED TO MYSQL SUCCESSFULLY')
