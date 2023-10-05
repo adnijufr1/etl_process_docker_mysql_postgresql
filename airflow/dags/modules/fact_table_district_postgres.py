@@ -2,23 +2,22 @@ from sqlalchemy.engine import create_engine
 import pandas as pd 
 import psycopg2
 
-
 # MySQL connection
-mysql_username = 'root'
-mysql_password = 'mysql'
-mysql_host = '192.168.100.16'
-mysql_port = '3307'
-mysql_database = 'raw_data'
+mysql_username = 
+mysql_password = 
+mysql_host = 
+mysql_port = 
+mysql_database = 
 
 mysql_conn_string = f"mysql+mysqlconnector://{mysql_username}:{mysql_password}@{mysql_host}:{mysql_port}/{mysql_database}"
 engine_mysql = create_engine(mysql_conn_string)
 
 # PostgreSQL connection
-postgres_username = 'postgres'
-postgres_password = 'postgres'
-postgres_host = '192.168.100.16'
-postgres_port = '5435'
-postgres_database = 'dwh'
+postgres_username = 
+postgres_password = 
+postgres_host = 
+postgres_port = 
+postgres_database = 
 
 engine_postgre = psycopg2.connect(dbname=postgres_database, 
 user=postgres_username, 
